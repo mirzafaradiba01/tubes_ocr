@@ -1,20 +1,90 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'dart:ui';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:io';
+import 'package:tubes_ocr/view/tampilan_scan_galeri.dart';
 
-class SaatMauScan extends StatelessWidget {
+class SaatMauScan extends StatefulWidget {
+  @override
+  _SaatMauScanState createState() => _SaatMauScanState();
+}
+
+class _SaatMauScanState extends State<SaatMauScan> {
+  double baseWidth = 411;
+  double fem = 1.0; // Default value, will be updated in build method
+  late PermissionStatus cameraStatus;
+  late PermissionStatus galleryStatus;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkPermissions();
+  }
+
+  Future<void> _checkPermissions() async {
+    cameraStatus = await Permission.camera.status;
+    galleryStatus = await Permission.photos.status;
+
+    setState(() {
+      // Update the UI based on permission status
+      fem = MediaQuery.of(context).size.width / baseWidth;
+    });
+  }
+
+  Future<void> _openCamera(BuildContext context) async {
+    if (cameraStatus.isGranted) {
+      final image = await ImagePicker().getImage(source: ImageSource.camera);
+      if (image != null) {
+        // Handle the captured image
+        print("Image from camera: ${image.path}");
+      }
+    } else {
+      // If permission not granted, request it
+      if (await Permission.camera.request().isGranted) {
+        _openCamera(context); // Call again after permission is granted
+      }
+    }
+  }
+
+  Future<void> _openGallery(BuildContext context) async {
+  var galleryStatus = await Permission.photos.status;
+
+  if (galleryStatus.isGranted) {
+    final picker = ImagePicker();
+    // ignore: deprecated_member_use
+    final image = await picker.getImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TampilanScanGaleri(imagePath: image.path),
+        ),
+      );
+    }
+  } else {
+    // If permission not granted, show a message to the user
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Gallery permission is required to pick images.'),
+      ),
+    );
+  }
+}
+
   @override
   Widget build(BuildContext context) {
-    double baseWidth = 411;
-    double fem = MediaQuery.of(context).size.width / baseWidth;
-    double ffem = fem * 0.97;
-    return Container(
+    fem = MediaQuery.of(context).size.width / baseWidth;
+    return SizedBox(
       width: double.infinity,
       child: Container(
         // saatmauscanjnm (270:258)
         width: double.infinity,
         height: 731 * fem,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color(0xffffffff),
         ),
         child: Stack(
@@ -62,7 +132,9 @@ class SaatMauScan extends StatelessWidget {
                   width: 144 * fem,
                   height: 63 * fem,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _openCamera(context);
+                    },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
                     ),
@@ -108,7 +180,9 @@ class SaatMauScan extends StatelessWidget {
                   width: 145 * fem,
                   height: 63 * fem,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _openGallery(context);
+                    },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
                     ),

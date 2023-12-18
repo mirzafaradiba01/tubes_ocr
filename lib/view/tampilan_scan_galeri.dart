@@ -1,8 +1,38 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'dart:ui';
+// ignore_for_file: avoid_print
 
-class TampilanScanKtpGaleri extends StatelessWidget {
+import 'package:flutter/material.dart';
+// ignore: unused_import
+import 'package:flutter/gestures.dart';
+// ignore: unused_import
+import 'dart:ui';
+import 'dart:io';
+
+class TampilanScanGaleri extends StatelessWidget {
+  final String imagePath;
+
+  const TampilanScanGaleri({Key? key, required this.imagePath}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print("ImagePath: $imagePath");
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Selected Image'),
+      ),
+      body: Center(
+        child: Image.file(
+          File(imagePath),
+          width: 300.0,
+          height: 300.0,
+        ),
+      ),
+    );
+  }
+}
+
+/* class TampilanScanKtpGaleri extends StatelessWidget {
+  final String imagePath;
+  const TampilanScanKtpGaleri({Key? key, required this.imagePath}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double baseWidth = 411;
@@ -575,4 +605,4 @@ class TampilanScanKtpGaleri extends StatelessWidget {
       ),
     );
   }
-}
+}*/
