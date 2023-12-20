@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tubes_ocr/view/home.dart';
 import 'package:tubes_ocr/view/input_lahan.dart';
 import 'package:tubes_ocr/view/saat_scan.dart';
-import 'package:tubes_ocr/view/tampilan.kamera.dart';
 
 class After extends StatelessWidget {
   const After({super.key});
@@ -191,7 +190,7 @@ class After extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Home()),
+                      MaterialPageRoute(builder: (context) => HomePage()),
                       );
                     },
                   child: Image.asset(

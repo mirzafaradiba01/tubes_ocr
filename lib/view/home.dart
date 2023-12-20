@@ -3,10 +3,10 @@ import 'package:tubes_ocr/main.dart';
 import 'package:tubes_ocr/view/formulir-full.dart';
 import 'package:tubes_ocr/view/saat_scan.dart';
 
-void main() => runApp(const Home());
+void main() => runApp(const HomePage());
 
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

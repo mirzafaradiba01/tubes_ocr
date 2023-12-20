@@ -1,11 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:tubes_ocr/firebase_options.dart';
 import 'package:tubes_ocr/view/after_scan.dart';
 import 'package:tubes_ocr/view/home.dart';
 import 'package:tubes_ocr/view/input_lahan.dart';
 import 'package:tubes_ocr/view/login.dart';
 
-
-void main() => runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -17,15 +24,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: const After(),
-      // Set the initialRoute to '/login'
       initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginPage(),
-        // Add other routes as needed
+        '/home': (context) => const HomePage(), // Ganti dengan widget home Anda
+        // ... (Tambahkan rute-rute lainnya jika diperlukan)
       },
     );
   }
 }
-
 

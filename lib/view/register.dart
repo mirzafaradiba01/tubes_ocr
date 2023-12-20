@@ -1,42 +1,67 @@
 // ignore_for_file: avoid_print
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:tubes_ocr/firebase_auth/firebase_auth_service.dart';
 
-void main() {
-  runApp(const RegisterPage());
-}
-
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return _RegisterPage();
-  }
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _RegisterPage extends StatefulWidget {
+class _RegisterPageState extends State<RegisterPage> {
+  final FirebaseAuthService _auth = FirebaseAuthService();
+
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
   @override
-  __RegisterPageState createState() => __RegisterPageState();
-}
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
-class __RegisterPageState extends State<_RegisterPage> {
   bool _obscureText = true;
 
   Future<void> _handleGoogleSignIn() async {
     try {
+      print('!!!!!!!!!!!!!!START!!!!!');
       final GoogleSignInAccount? googleSignInAccount =
           await GoogleSignIn().signIn();
 
       if (googleSignInAccount == null) {
+        print('!!!!!!!!!!!!!!gagal!!!!!');
+
         return;
       }
+      print('!!!!!!!!!!!!!!START!!!!!');
 
+      // Handle Google sign-in success
       print('User signed in: ${googleSignInAccount.displayName}');
+
+      // Jika berhasil sign-in dengan Google, langsung lakukan registrasi atau navigasi ke halaman home.
+      await _registerWithGoogle(googleSignInAccount);
     } catch (error) {
       print('Error during Google Sign-In: $error');
     }
+  }
+
+  Future<void> _registerWithGoogle(
+      GoogleSignInAccount googleSignInAccount) async {
+    // Di sini, Anda dapat menggunakan informasi dari `googleSignInAccount` untuk melakukan registrasi atau
+    // mungkin menyimpan informasi pengguna ke database.
+
+    // Contoh penggunaan `_auth` (FirebaseAuthService) untuk registrasi:
+    // await _auth.registerWithGoogle(googleSignInAccount);
+
+    // Setelah registrasi berhasil, navigasikan ke halaman home.
+    Navigator.pushReplacementNamed(context, "/home");
   }
 
   @override
@@ -86,9 +111,10 @@ class __RegisterPageState extends State<_RegisterPage> {
                       ),
                       const SizedBox(height: 18),
                       TextField(
+                        controller: _emailController,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                          labelText: 'Email atau No.Telp',
+                          labelText: 'Email',
                           labelStyle: const TextStyle(color: Colors.white),
                           enabledBorder: OutlineInputBorder(
                             borderSide: const BorderSide(color: Colors.white),
@@ -102,6 +128,7 @@ class __RegisterPageState extends State<_RegisterPage> {
                       ),
                       const SizedBox(height: 18),
                       TextField(
+                        controller: _usernameController,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
                           labelText: 'Username',
@@ -118,6 +145,7 @@ class __RegisterPageState extends State<_RegisterPage> {
                       ),
                       const SizedBox(height: 18),
                       TextField(
+                        controller: _passwordController,
                         obscureText: _obscureText,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
@@ -148,13 +176,17 @@ class __RegisterPageState extends State<_RegisterPage> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16),
                         child: ElevatedButton(
-                          onPressed: _handleGoogleSignIn,
+                          onPressed: () {
+                            print('!!!!!!!!!!!!!!START!!!!!');
+
+                            _handleGoogleSignIn();
+                          },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                               Colors.white,
                             ),
-                            shape:
-                                MaterialStateProperty.all<RoundedRectangleBorder>(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -197,8 +229,8 @@ class __RegisterPageState extends State<_RegisterPage> {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                 const Color.fromRGBO(0, 134, 49, 1),
                               ),
-                              shape:
-                                  MaterialStateProperty.all<RoundedRectangleBorder>(
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -215,20 +247,15 @@ class __RegisterPageState extends State<_RegisterPage> {
                           const Spacer(),
                           ElevatedButton(
                             onPressed: () {
-                              // Tambahkan logika untuk tombol Register
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const RegisterPage(),
-                                ),
-                              );
+                              // Pemanggilan fungsi _signUp saat tombol Register ditekan
+                              _signUp();
                             },
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
                                 const Color.fromRGBO(0, 134, 49, 1),
                               ),
-                              shape:
-                                  MaterialStateProperty.all<RoundedRectangleBorder>(
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -253,5 +280,23 @@ class __RegisterPageState extends State<_RegisterPage> {
         ),
       ),
     );
+  }
+
+  void _signUp() async {
+    String username = _usernameController.text;
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    // Lakukan registrasi
+    User? user = await _auth.signUpWithEmailAndPassword(email, password);
+
+    if (user != null) {
+      print("User is successfully created");
+
+      // Navigasi ke halaman home setelah registrasi berhasil
+      Navigator.pushReplacementNamed(context, "/home");
+    } else {
+      print("Some error happened");
+    }
   }
 }

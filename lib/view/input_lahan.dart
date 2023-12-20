@@ -183,7 +183,7 @@ class Input extends StatelessWidget {
                     onTap: (){
                       Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Home()),
+                      MaterialPageRoute(builder: (context) => HomePage()),
                       );
                     },
                   child: Image.asset(
@@ -312,7 +312,7 @@ class Input extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Home()),
+                      MaterialPageRoute(builder: (context) => HomePage()),
                       );
                     },
                     style: TextButton.styleFrom (

@@ -107,7 +107,7 @@ class Formulir extends StatelessWidget {
                     onPressed: (){
                       Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Home()),
+                      MaterialPageRoute(builder: (context) => HomePage()),
                       );
                     },
                 child: SizedBox(

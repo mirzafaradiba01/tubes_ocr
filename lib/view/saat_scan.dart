@@ -15,47 +15,48 @@ class SaatMauScan extends StatefulWidget {
 class _SaatMauScanState extends State<SaatMauScan> {
   double baseWidth = 411;
   double fem = 1.0; // Default value, will be updated in build method
-  late PermissionStatus cameraStatus;
-  late PermissionStatus galleryStatus;
+  // late PermissionStatus cameraStatus;
+  // late PermissionStatus galleryStatus;
+  final picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
-    _checkPermissions();
+    // _checkPermissions();
   }
 
-  Future<void> _checkPermissions() async {
-    cameraStatus = await Permission.camera.status;
-    galleryStatus = await Permission.photos.status;
+  // Future<void> _checkPermissions() async {
+  //   cameraStatus = await Permission.camera.status;
+  //   galleryStatus = await Permission.photos.status;
 
-    setState(() {
-      // Update the UI based on permission status
-      fem = MediaQuery.of(context).size.width / baseWidth;
-    });
-  }
+  //   setState(() {
+  //     // Update the UI based on permission status
+  //     fem = MediaQuery.of(context).size.width / baseWidth;
+  //   });
+  // }
 
   Future<void> _openCamera(BuildContext context) async {
-    if (cameraStatus.isGranted) {
-      final image = await ImagePicker().getImage(source: ImageSource.camera);
-      if (image != null) {
-        // Handle the captured image
-        print("Image from camera: ${image.path}");
-      }
-    } else {
-      // If permission not granted, request it
-      if (await Permission.camera.request().isGranted) {
-        _openCamera(context); // Call again after permission is granted
-      }
+    // if (cameraStatus.isGranted) {
+    final image = await picker.getImage(source: ImageSource.camera);
+    if (image != null) {
+      // Handle the captured image
+      print("Image from camera: ${image.path}");
     }
+    // } else {
+    //   // If permission not granted, request it
+    //   if (await Permission.camera.request().isGranted) {
+    //     _openCamera(context); // Call again after permission is granted
+    //   }
+    // }
+    setState(() {});
   }
 
   Future<void> _openGallery(BuildContext context) async {
-  var galleryStatus = await Permission.photos.status;
+    // var galleryStatus = await Permission.photos.status;
 
-  if (galleryStatus.isGranted) {
-    final picker = ImagePicker();
+    // if (galleryStatus.isGranted) {
     // ignore: deprecated_member_use
-    final image = await picker.getImage(source: ImageSource.gallery);
+    final image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
       Navigator.push(
@@ -65,15 +66,16 @@ class _SaatMauScanState extends State<SaatMauScan> {
         ),
       );
     }
-  } else {
-    // If permission not granted, show a message to the user
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Gallery permission is required to pick images.'),
-      ),
-    );
+    // } else {
+    //   // If permission not granted, show a message to the user
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       content: Text('Gallery permission is required to pick images.'),
+    //     ),
+    //   );
+    // }
+    setState(() {});
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -132,8 +134,8 @@ class _SaatMauScanState extends State<SaatMauScan> {
                   width: 144 * fem,
                   height: 63 * fem,
                   child: TextButton(
-                    onPressed: () {
-                      _openCamera(context);
+                    onPressed: () async {
+                      await _openCamera(context);
                     },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -180,8 +182,8 @@ class _SaatMauScanState extends State<SaatMauScan> {
                   width: 145 * fem,
                   height: 63 * fem,
                   child: TextButton(
-                    onPressed: () {
-                      _openGallery(context);
+                    onPressed: () async {
+                      await _openGallery(context);
                     },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -417,7 +419,9 @@ class _SaatMauScanState extends State<SaatMauScan> {
                   width: 42 * fem,
                   height: 35 * fem,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, '/home');
+                    },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
                     ),
