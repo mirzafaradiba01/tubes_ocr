@@ -37,9 +37,15 @@ class _SaatMauScanState extends State<SaatMauScan> {
 
   Future<void> _openCamera(BuildContext context) async {
     // if (cameraStatus.isGranted) {
-    final image = await picker.getImage(source: ImageSource.camera);
+    final image = await picker.pickImage(source: ImageSource.camera);
     if (image != null) {
       // Handle the captured image
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TampilanScanGaleri(imagePath: image.path),
+        ),
+      );
       print("Image from camera: ${image.path}");
     }
     // } else {
@@ -129,46 +135,30 @@ class _SaatMauScanState extends State<SaatMauScan> {
               // Kotak Kamera
               left: 54 * fem,
               top: 605 * fem,
-              child: Align(
-                child: SizedBox(
+              child: TextButton(
+                onPressed: () async {
+                  await _openCamera(context);
+                },
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                ),
+                child: Container(
                   width: 144 * fem,
                   height: 63 * fem,
-                  child: TextButton(
-                    onPressed: () async {
-                      await _openCamera(context);
-                    },
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20 * fem),
-                        color: Color(0xff008631),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0x3f000000),
-                            offset: Offset(0 * fem, 4 * fem),
-                            blurRadius: 2 * fem,
-                          ),
-                        ],
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20 * fem),
+                    color: Color(0xff008631),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x3f000000),
+                        offset: Offset(0 * fem, 4 * fem),
+                        blurRadius: 2 * fem,
                       ),
-                    ),
+                    ],
                   ),
-                ),
-              ),
-            ),
-            Positioned(
-              // logo kamera
-              left: 105 * fem,
-              top: 610 * fem,
-              child: Align(
-                child: SizedBox(
-                  width: 44 * fem,
-                  height: 50 * fem,
                   child: Image.asset(
                     'assets/images/camera-alt.png',
-                    width: 36 * fem,
-                    height: 32 * fem,
                   ),
                 ),
               ),
@@ -177,42 +167,28 @@ class _SaatMauScanState extends State<SaatMauScan> {
               // Persegi panjang berisi logo galeri
               left: 219 * fem,
               top: 605 * fem,
-              child: Align(
-                child: SizedBox(
+              child: TextButton(
+                onPressed: () async {
+                  await _openGallery(context);
+                },
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                ),
+                child: Container(
                   width: 145 * fem,
                   height: 63 * fem,
-                  child: TextButton(
-                    onPressed: () async {
-                      await _openGallery(context);
-                    },
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20 * fem),
-                        color: Color(0xff008631),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0x3f000000),
-                            offset: Offset(0 * fem, 4 * fem),
-                            blurRadius: 2 * fem,
-                          ),
-                        ],
+                  padding: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20 * fem),
+                    color: Color(0xff008631),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x3f000000),
+                        offset: Offset(0 * fem, 4 * fem),
+                        blurRadius: 2 * fem,
                       ),
-                    ),
+                    ],
                   ),
-                ),
-              ),
-            ),
-            Positioned(
-              // logo galeri
-              left: 264 * fem,
-              top: 610 * fem,
-              child: Align(
-                child: SizedBox(
-                  width: 44 * fem,
-                  height: 50 * fem,
                   child: Image.asset(
                     'assets/images/picture-Fw3.png',
                     fit: BoxFit.contain,

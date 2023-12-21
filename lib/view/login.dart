@@ -17,8 +17,8 @@ class _LoginPageState extends State<LoginPage> {
   final FirebaseAuthService _auth = FirebaseAuthService();
 
   TextEditingController _usernameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _emailController = TextEditingController(text: 'oirizky77@gmail.com');
+  TextEditingController _passwordController = TextEditingController(text: 'lolipop123');
 
   bool _isPasswordVisible = false;
 

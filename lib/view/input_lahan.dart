@@ -341,10 +341,10 @@ class Input extends StatelessWidget {
                   height: 30,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => After()),
-                      );
+                      // Navigator.push(
+                      // context,
+                      // MaterialPageRoute(builder: (context) => AfterScanPage()),
+                      // );
                     },
                     style: TextButton.styleFrom (
                       padding: EdgeInsets.zero,

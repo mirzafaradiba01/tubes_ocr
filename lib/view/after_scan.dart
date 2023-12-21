@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:tubes_ocr/view/home.dart';
 import 'package:tubes_ocr/view/input_lahan.dart';
 import 'package:tubes_ocr/view/saat_scan.dart';
 
-class After extends StatelessWidget {
-  const After({super.key});
+class AfterScanPage extends StatelessWidget {
+  const AfterScanPage({super.key, required this.data, required this.image});
+
+  final Map<String, dynamic> data;
+  final String image;
   
   @override
   Widget build(BuildContext context) {
@@ -211,8 +216,8 @@ class After extends StatelessWidget {
                   height: 167,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(22),
-                    child: Image.asset(
-                      'assets/images/ktp.png',
+                    child: Image.file(
+                      File(image),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -534,10 +539,9 @@ class After extends StatelessWidget {
               top: 360,
               child: Align(
                 child: SizedBox(
-                  width: 80,
                   height: 31,
                   child: Text(
-                    'Nik',
+                    data['nik'] ??'Nik',
                     style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontSize: 13,
@@ -554,10 +558,9 @@ class After extends StatelessWidget {
               top: 410,
               child: Align(
                 child: SizedBox(
-                  width: 80,
                   height: 31,
                   child: Text(
-                    'Nama',
+                    data['nama'] ?? 'Nama',
                     style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontSize: 13,
@@ -574,7 +577,6 @@ class After extends StatelessWidget {
               top: 460,
               child: Align(
                 child: SizedBox(
-                  width: 190,
                   height: 150,
                   child: Text(
                     'Jenis Kelamin',
@@ -594,10 +596,9 @@ class After extends StatelessWidget {
               top: 510,
               child: Align(
                 child: SizedBox(
-                  width: 80,
                   height: 31,
                   child: Text(
-                    'TTL',
+                    data['ttl'] ??'TTL',
                     style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontSize: 13,
@@ -614,10 +615,9 @@ class After extends StatelessWidget {
               top: 550,
               child: Align(
                 child: SizedBox(
-                  width: 80,
                   height: 31,
                   child: Text(
-                    'Desa',
+                    data['kecamatan'] ?? 'Kecamatan',
                     style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontSize: 13,
